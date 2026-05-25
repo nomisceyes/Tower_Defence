@@ -2,6 +2,7 @@
 
 public class Cell : MonoBehaviour
 {
+    public Tower Tower;
     public Vector3 Position;
     public int X;
     public int Z;

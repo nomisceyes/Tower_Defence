@@ -4,7 +4,6 @@ public class Outline : MonoBehaviour
 {
     public Material LineMaterial;
     public float LineWidth = 0.05f;
-    public Color OutlineColor = Color.green;
     
     private bool _shouldDraw = false;
     private Vector3 _cellPosition;
@@ -30,10 +29,9 @@ public class Outline : MonoBehaviour
         LineMaterial.SetPass(0);
         GL.PushMatrix();
         GL.Begin(GL.QUADS);
-        GL.Color(OutlineColor);
     
         float half = _cellSize / 2;
-        float halfWidth = LineWidth;
+        float halfWidth = LineWidth / 2;
     
         Vector3 min = _cellPosition - new Vector3(half, _offsetY, half);
         Vector3 max = _cellPosition + new Vector3(half, _offsetY, half);
@@ -62,7 +60,7 @@ public class Outline : MonoBehaviour
         GL.End();
         GL.PopMatrix();
     }
-
+    
     private void DrawQuad(Vector3 min, Vector3 max)
     {
         GL.Vertex3(min.x, min.y, min.z);
