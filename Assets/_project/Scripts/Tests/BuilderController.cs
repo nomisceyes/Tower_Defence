@@ -5,7 +5,7 @@ public class BuilderController : MonoBehaviour
     public static BuilderController Instance;
 
     public BuilderPanel BuilderPanel;
-    public Tower TowerPrefab;
+    public Tower TowerPrefab; 
 
     private Camera _camera;
     private Cell _currentCell;
@@ -25,7 +25,7 @@ public class BuilderController : MonoBehaviour
             TrySelectCell();
     }
     
-    public void StartToCreateTower()
+    public void StartCreateTower()
     {
         if (_currentCell != null)
         {

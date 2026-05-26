@@ -14,5 +14,6 @@ public class BuilderPanel : MonoBehaviour
     public void Off()
     {
         Panel.SetActive(false);
+        TowerTooltip.Instance.HideTooltip();
     }
 }
