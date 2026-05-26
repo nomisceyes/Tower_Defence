@@ -8,7 +8,6 @@ public class Cell : MonoBehaviour
     public int Z;
     public bool IsBusy;
 
-    private Renderer _renderer;
     private Outline _outline;
 
     public void Init(Vector3 position, int x, int z)
@@ -20,7 +19,6 @@ public class Cell : MonoBehaviour
     
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
         _outline = GetComponent<Outline>();
     }
 

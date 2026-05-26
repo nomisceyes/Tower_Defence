@@ -2,41 +2,60 @@ using UnityEngine;
 
 public class BuilderController : MonoBehaviour
 {
-    public Tower TowerPrefab;
-    private Camera _camera;
+    public static BuilderController Instance;
 
-    private Vector3 _offsetY = new Vector3(0, 1, 0);
+    public BuilderPanel BuilderPanel;
+    public Tower TowerPrefab;
+
+    private Camera _camera;
+    private Cell _currentCell;
+    private readonly Vector3 _offsetY = new(0, 1, 0);
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+
         _camera = Camera.main;
     }
 
     private void Update()
     {
-        Build();
+        if (Input.GetMouseButtonDown(0) && BuilderPanel.IsActive == false)
+            TrySelectCell();
     }
-
-    private void Build()
+    
+    public void StartToCreateTower()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (_currentCell != null)
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.TryGetComponent(out Cell cell))
-                {
-                    if (cell.IsBusy == false)
-                        cell.Tower = CreateTower(cell);
-                }
-            }
+            Instantiate(TowerPrefab, _currentCell.Position + _offsetY, Quaternion.identity, transform);
+            BuilderPanel.Off();
         }
     }
 
-    private Tower CreateTower(Cell cell)
+    private void TrySelectCell()
     {
-        cell.IsBusy = true;
-        return Instantiate(TowerPrefab, cell.Position + _offsetY, Quaternion.identity, transform);
+        if (TryRaycastToCell(out Cell cell) == false)
+            return;
+
+        _currentCell = cell;
+        
+        if (_currentCell.IsBusy == false)
+            BuilderPanel.On();
+    }
+
+    private bool TryRaycastToCell(out Cell cell)
+    {
+        cell = null;
+
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+        
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            return hit.collider.TryGetComponent(out cell);
+        }
+        
+        return false;
     }
 }
